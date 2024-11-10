@@ -4,7 +4,7 @@ import java.io.*;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
+import java.util.ArrayList;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +16,10 @@ import javax.swing.ImageIcon;
  * @author ASUS
  */
 public class AplikasiCekCuacaSederhanaFrame extends javax.swing.JFrame {
-private String getWeatherData(String city) {
+private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota favorit
+    private DefaultComboBoxModel<String> comboBoxModel;  // Untuk mengelola comboBox
+
+    private String getWeatherData(String city) {
         try {
             String apiKey = "fb2bd2b06926c93515571d299f56a31c"; // Ganti dengan API key Anda
             String urlString = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric";
@@ -49,6 +52,12 @@ private String getWeatherData(String city) {
     }
     public AplikasiCekCuacaSederhanaFrame() {
         initComponents();
+        comboBoxModel = (DefaultComboBoxModel<String>) comboBoxKota.getModel();  // Mengambil model dari comboBox
+
+    // Menambahkan kota favorit ke ComboBox
+    for (String city : daftarFavorit) {
+        comboBoxModel.addElement(city);  // Menambahkan kota favorit ke ComboBox
+    }
     }
 
     /**
@@ -69,6 +78,7 @@ private String getWeatherData(String city) {
         labelKota = new javax.swing.JLabel();
         labelCuaca = new javax.swing.JLabel();
         labelGambarCuaca = new javax.swing.JLabel();
+        buttonFavorit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,6 +93,11 @@ private String getWeatherData(String city) {
         comboBoxKota.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboBoxKotaItemStateChanged(evt);
+            }
+        });
+        comboBoxKota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxKotaActionPerformed(evt);
             }
         });
 
@@ -111,36 +126,46 @@ private String getWeatherData(String city) {
         labelGambarCuaca.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         labelGambarCuaca.setText("Kondisi Cuaca");
 
+        buttonFavorit.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        buttonFavorit.setText("Tambah favorit");
+        buttonFavorit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonFavoritActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelUtamaLayout = new javax.swing.GroupLayout(panelUtama);
         panelUtama.setLayout(panelUtamaLayout);
         panelUtamaLayout.setHorizontalGroup(
             panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUtamaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelJudul)
+                .addGap(70, 70, 70))
+            .addGroup(panelUtamaLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelGambarCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelCuaca)
+                        .addComponent(labelKota)))
+                .addGap(121, 121, 121)
                 .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelUtamaLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(labelCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelKota)
-                            .addComponent(labelGambarCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(121, 121, 121)
-                        .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panelUtamaLayout.createSequentialGroup()
-                                .addComponent(comboBoxKota, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonCekCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelUtamaLayout.createSequentialGroup()
-                                .addComponent(textFieldCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(panelUtamaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelJudul)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panelUtamaLayout.createSequentialGroup()
+                            .addComponent(comboBoxKota, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(buttonCekCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(panelUtamaLayout.createSequentialGroup()
+                            .addComponent(textFieldCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(buttonFavorit)))
+                    .addComponent(buttonKeluar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 41, Short.MAX_VALUE))
         );
         panelUtamaLayout.setVerticalGroup(
             panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelUtamaLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUtamaLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(labelJudul)
                 .addGap(43, 43, 43)
@@ -148,15 +173,19 @@ private String getWeatherData(String city) {
                     .addComponent(comboBoxKota, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonCekCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelKota))
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelCuaca)
+                    .addComponent(textFieldCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonFavorit, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelCuaca, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textFieldCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(labelGambarCuaca)
-                .addGap(37, 37, 37))
+                    .addGroup(panelUtamaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelUtamaLayout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(labelGambarCuaca)))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -263,6 +292,27 @@ private String getWeatherData(String city) {
          System.exit(0); // Menutup aplikasi
     }//GEN-LAST:event_buttonKeluarActionPerformed
 
+    private void comboBoxKotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxKotaActionPerformed
+        
+    }//GEN-LAST:event_comboBoxKotaActionPerformed
+
+    private void buttonFavoritActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFavoritActionPerformed
+        // Ambil kota yang dipilih
+    String selectedCity = comboBoxKota.getSelectedItem().toString();
+
+    // Cek apakah kota sudah ada di daftar favorit
+    if (!daftarFavorit.contains(selectedCity)) {
+        // Menambahkan kota ke daftar favorit
+        daftarFavorit.add(selectedCity);
+        
+        // Menambahkan kota favorit ke ComboBox (jika belum ada)
+        comboBoxModel.addElement(selectedCity);  // comboBoxModel adalah model ComboBox
+        JOptionPane.showMessageDialog(this, "Kota ditambahkan ke favorit!", "Berhasil", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(this, "Kota sudah ada di favorit!", "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_buttonFavoritActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -300,6 +350,7 @@ private String getWeatherData(String city) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCekCuaca;
+    private javax.swing.JButton buttonFavorit;
     private javax.swing.JButton buttonKeluar;
     private javax.swing.JComboBox<String> comboBoxKota;
     private javax.swing.JLabel labelCuaca;
