@@ -5,6 +5,8 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -79,6 +81,7 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
         labelCuaca = new javax.swing.JLabel();
         labelGambarCuaca = new javax.swing.JLabel();
         buttonFavorit = new javax.swing.JButton();
+        buttonSimpanKeCsv = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,6 +137,14 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
             }
         });
 
+        buttonSimpanKeCsv.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        buttonSimpanKeCsv.setText("Simpan Ke CSV");
+        buttonSimpanKeCsv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSimpanKeCsvActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelUtamaLayout = new javax.swing.GroupLayout(panelUtama);
         panelUtama.setLayout(panelUtamaLayout);
         panelUtamaLayout.setHorizontalGroup(
@@ -150,8 +161,8 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
                         .addComponent(labelCuaca)
                         .addComponent(labelKota)))
                 .addGap(121, 121, 121)
-                .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(panelUtamaLayout.createSequentialGroup()
                             .addComponent(comboBoxKota, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -160,7 +171,9 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
                             .addComponent(textFieldCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(buttonFavorit)))
-                    .addComponent(buttonKeluar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(buttonSimpanKeCsv)
+                        .addComponent(buttonKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 41, Short.MAX_VALUE))
         );
         panelUtamaLayout.setVerticalGroup(
@@ -181,11 +194,13 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
                 .addGroup(panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelUtamaLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonSimpanKeCsv, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelUtamaLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(labelGambarCuaca)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -313,6 +328,31 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
     }
     }//GEN-LAST:event_buttonFavoritActionPerformed
 
+    private void buttonSimpanKeCsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimpanKeCsvActionPerformed
+        String city = comboBoxKota.getSelectedItem().toString(); // Ambil kota yang dipilih
+    String temperature = textFieldCuaca.getText(); // Ambil suhu yang ditampilkan
+    
+    // Periksa apakah data cuaca sudah ada
+    if (temperature.isEmpty() || temperature.equals("Data cuaca tidak ditemukan.")) {
+        JOptionPane.showMessageDialog(this, "Data cuaca belum tersedia. Cek cuaca terlebih dahulu.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // Tentukan nama file CSV
+    String fileName = "data_cuaca.csv";
+    
+    // Menulis ke file CSV
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) { // true untuk append
+        // Format data yang akan disimpan: Kota, Suhu
+        writer.write(city + "," + temperature);
+        writer.newLine(); // Pindah ke baris berikutnya
+        JOptionPane.showMessageDialog(this, "Data cuaca berhasil disimpan ke " + fileName, "Sukses", JOptionPane.INFORMATION_MESSAGE);
+    } catch (IOException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Gagal menyimpan data cuaca.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_buttonSimpanKeCsvActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -352,6 +392,7 @@ private ArrayList<String> daftarFavorit = new ArrayList<>();  // Menyimpan kota 
     private javax.swing.JButton buttonCekCuaca;
     private javax.swing.JButton buttonFavorit;
     private javax.swing.JButton buttonKeluar;
+    private javax.swing.JButton buttonSimpanKeCsv;
     private javax.swing.JComboBox<String> comboBoxKota;
     private javax.swing.JLabel labelCuaca;
     private javax.swing.JLabel labelGambarCuaca;
