@@ -21,8 +21,7 @@ Aplikasi ini bertujuan untuk memberikan pengalaman yang mudah dan efisien dalam 
 - Kota Favorit Fitur kota favorit memungkinkan pengguna untuk memantau cuaca dari kota yang sering dikunjungi atau dipantau tanpa perlu memilih kota secara manual setiap kali membuka aplikasi.
 - Gambar Cuaca Interaktif Menampilkan gambar cuaca berdasarkan data yang diperoleh dari API memberikan pengalaman visual yang lebih menyenangkan bagi pengguna. Hal ini juga memudahkan pengguna untuk langsung memahami kondisi cuaca hanya dengan melihat gambar yang tampil.
 - Portabilitas Aplikasi ini dibuat dengan Java, sehingga dapat dijalankan di berbagai platform yang mendukung Java, seperti Windows, Linux, dan macOS. Dengan demikian, aplikasi ini dapat digunakan oleh siapa saja tanpa terikat pada satu sistem operasi tertentu.
-## Pembuat Aplikasi Penghitung Kata
-
+## Pembuat Aplikasi Cek Cuaca Sederhana
 - Nama  : Maria Olpah
 - Npm   : 2210010684
 - Kelas : 5C Reg Pagi Banjarmasin
